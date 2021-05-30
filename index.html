@@ -6,9 +6,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pixel manipulation</title>
     <link rel="stylesheet" href="mycss.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 </head>
 <body>
-    <canvas id="canvas1"></canvas>
+    <section class="d-flex flex-column justify-content-center align-items-center">
+        <div class="fw-bold text-white pt-5 ">GLOBAL COMPOSITE OPERATION</div>
+        <div class="my-5 d-flex align-items-center">
+            <select class="mx-2 p-2 rounded border-info" name="globalCompositeOperation" id="globalCompositeOperation">
+                <option value="source-over" selected>source-over (default)</option>
+                <option value="source-in">source-in</option>
+                <option value="sorce-out">sorce-out</option>
+                <option value="source-atop">source-atop</option>
+                <option value="destination-over">destination-over</option>
+                <option value="destination-in">destination-in</option>
+                <option value="destination-out">destination-out</option>
+                <option value="destination-atop">destination-atop</option>
+                <option value="lighter">lighter</option>
+                <option value="copy">copy</option>
+                <option value="xor">xor</option>
+                <option value="multiply">multiply</option>
+                <option value="screen">screen</option>
+                <option value="overlay">overlay</option>
+                <option value="darken">darken</option>
+                <option value="lighten">lighten</option>
+                <option value="color-dodge">color-dodge</option>
+                <option value="color-burn">color-burn</option>
+                <option value="hard-light">hard-light</option>
+                <option value="soft-light">soft-light</option>
+                <option value="difference">difference</option>
+                <option value="exclusion">exclusion</option>
+                <option value="hue">hue</option>
+                <option value="saturation">saturation</option>
+                <option value="color">color</option>
+                <option value="luminosity">luminosity</option>
+            </select>
+            <button id="gCO-btn" class="btn mx-2 p-2 rounded border-info bg-info">Get the Selected Index</button>
+        </div>
+    </section>
+    <section class="position-relative w-100 h-100 d-flex justify-content-center">
+        <canvas id="canvas1"></canvas>
+    </section>
     <script src="script2.js"></script>
 </body>
 </html>

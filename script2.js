@@ -45,6 +45,8 @@ image1.addEventListener( 'load', function() {
     let particlesArray = [];
     const numberOfParticles = 5000;
 
+    let gCO = 'source-over';
+
     let mappedImage = [];
     for (let y = 0; y < canvas.height; y++) {
         //* We create 1 row array for each one of the 590 rows of the image
@@ -110,10 +112,19 @@ image1.addEventListener( 'load', function() {
             //! ctx.globalCompositeOperation = 'luminosity';
             //! ctx.globalCompositeOperation = 'lighter';
             
+            //* We put the selected option value into a variable
+            /* let gCO = 'source-over'; */ 
+            let btn = document.getElementById('gCO-btn');
+
+            btn.onclick = (event) => {
+                /* counter = 0; */
+                gCO = document.getElementById('globalCompositeOperation').value;
+            };
+
             if (switcher === 1) {
-                ctx.globalCompositeOperation = 'source-over';
+                ctx.globalCompositeOperation = gCO;
             } else {
-                ctx.globalCompositeOperation = 'luminosity';
+                ctx.globalCompositeOperation = 'source-over';
             }
             if (counter % 12 === 0) {
                 /* this.x = 0;
