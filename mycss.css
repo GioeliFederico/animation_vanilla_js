@@ -1,0 +1,19 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: black;
+}
+
+#canvas1 {
+    width: 937px;
+    max-width: 100vw;
+    height: 1170px;
+    max-height: 100vh;
+    border: 2px solid white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* filter: blur(1px) contrast(1) */
+}
