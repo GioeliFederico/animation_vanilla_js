@@ -11,6 +11,12 @@
     color: #e9327c;
 }
 
+#shapeParticles {
+    width: fit-content;
+    background: transparent;
+    color: #e9327c;
+}
+
 #canvas1 {
     width: 561px;
     height: 700px;
@@ -34,8 +40,8 @@
 .wrapper {
     position: relative;
     border: 4px solid white;
-    width: 561px;
-    height: 700px;
+    width: 569px;
+    height: 708px;
     overflow: hidden;
     box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.25);
 }

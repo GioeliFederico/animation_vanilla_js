@@ -9,40 +9,50 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 </head>
 <body>
-    <section class="d-flex flex-column justify-content-center align-items-center">
+    <section class="container-fluid d-flex flex-column justify-content-center align-items-center">
         <div class="fw-bold text-white pt-5">GLOBAL COMPOSITE OPERATION</div>
-        <div class="my-5 d-flex align-items-center">
+        <div class="my-3 d-flex align-items-center">
             <div class="mx-2 rounded border border-info">
                 <select class="mx-3 my-2 px-2 border-0" name="globalCompositeOperation" id="globalCompositeOperation">
-                    <option value="source-over" selected>source-over (default)</option>
-                    <option value="source-in">source-in</option>
-                    <option value="sorce-out">sorce-out</option>
-                    <option value="source-atop">source-atop</option>
-                    <option value="destination-over">destination-over</option>
-                    <option value="destination-in">destination-in</option>
-                    <option value="destination-out">destination-out</option>
-                    <option value="destination-atop">destination-atop</option>
-                    <option value="lighter">lighter</option>
-                    <option value="copy">copy</option>
-                    <option value="xor">xor</option>
-                    <option value="multiply">multiply</option>
-                    <option value="screen">screen</option>
-                    <option value="overlay">overlay</option>
-                    <option value="darken">darken</option>
-                    <option value="lighten">lighten</option>
-                    <option value="color-dodge">color-dodge</option>
-                    <option value="color-burn">color-burn</option>
-                    <option value="hard-light">hard-light</option>
-                    <option value="soft-light">soft-light</option>
-                    <option value="difference">difference</option>
-                    <option value="exclusion">exclusion</option>
-                    <option value="hue">hue</option>
-                    <option value="saturation">saturation</option>
-                    <option value="color">color</option>
-                    <option value="luminosity">luminosity</option>
+                    <option value="source-over" selected>SOURCE-OVER (default)</option>
+                    <option value="source-in">SOURCE-IN</option>
+                    <option value="sorce-out">SOURCE-OUT</option>
+                    <option value="source-atop">SOURCE-ATOP</option>
+                    <option value="destination-over">DESTINATION-OVER</option>
+                    <option value="destination-in">DESTINATION-IN</option>
+                    <option value="destination-out">DESTINATION-OUT</option>
+                    <option value="destination-atop">DESTINATION-ATOP</option>
+                    <option value="lighter">LIGHTER</option>
+                    <option value="copy">COPY</option>
+                    <option value="xor">XOR</option>
+                    <option value="multiply">MULTIPLY</option>
+                    <option value="screen">SCREEN</option>
+                    <option value="overlay">OVERLAY</option>
+                    <option value="darken">DARKEN</option>
+                    <option value="lighten">LIGHTEN</option>
+                    <option value="color-dodge">COLOR-DODGE</option>
+                    <option value="color-burn">COLOR-BURN</option>
+                    <option value="hard-light">HARD-LIGHT</option>
+                    <option value="soft-light">SOFT-LIGHT</option>
+                    <option value="difference">DIFFERENCE</option>
+                    <option value="exclusion">EXCLUSION</option>
+                    <option value="hue">HUE</option>
+                    <option value="saturation">SATURATION</option>
+                    <option value="color">COLOR</option>
+                    <option value="luminosity">LUMINOSITY</option>
                 </select>
             </div> 
             <button id="gCO-btn" class="btn mx-2 py-2 px-3 rounded border-info bg-info">Get the composite operation</button>
+        </div>
+        <div class="mb-5 d-flex align-items-center">
+            <div class="mx-2 rounded border border-info">
+                <select class="mx-3 my-2 px-2 border-0" name="shapeParticles" id="shapeParticles">
+                    <option value="arc" selected>CIRCLES (default)</option>
+                    <option value="rect">RECTANGLES</option>
+                    <option value="letters">LETTERS (J-O-K-E-R)</option>
+                </select>
+            </div> 
+            <button id="shape-btn" class="btn mx-2 py-2 px-3 rounded border-info bg-info">Get the particles shape</button>
         </div>
     </section>
     <section class="position-relative w-100 h-100 d-flex justify-content-center">
@@ -54,7 +64,6 @@
                 <div class="img-2">
                     <canvas id="canvas2"></canvas>
                 </div>
-                
             </div>
             <div class="slider">
                 <div class="drag-line">
