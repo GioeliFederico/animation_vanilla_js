@@ -13,9 +13,128 @@
 
 #canvas1 {
     width: 561px;
-    max-width: 100vw;
     height: 700px;
-    max-height: 100vh;
-    border: 2px solid white;
+  
     /* filter: blur(1px) contrast(1) */
 }
+
+#canvas2 {
+    width: 561px;
+    height: 700px;
+    /* filter: blur(1px) contrast(1) */
+}
+
+.wrapper .images .img-2 {
+    height: 100%;
+    width: 50%;
+    overflow: hidden;
+    position: absolute;
+}
+
+.wrapper {
+    position: relative;
+    border: 4px solid white;
+    width: 561px;
+    height: 700px;
+    overflow: hidden;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.25);
+}
+
+.images {
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+.images p {
+    color: white;
+    padding: 5px 15px;
+    background: transparent;
+    position: absolute;
+    z-index: 99;
+}
+
+.images p:first-child {
+    right: 0px;
+}
+
+.slider {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    z-index: 99;
+    background: transparent;
+}
+
+.slider input{
+    width: 100%;
+    outline: none; 
+    background: none;
+    -webkit-appearance: none;
+}
+
+.slider input::-webkit-slider-thumb{
+    height: 700px;
+    width: 30px;
+    background: transparent; 
+    -webkit-appearance: none;
+    cursor: col-resize;
+}
+
+.drag-line {
+    height: 700px;
+    width: 2px;
+    position: absolute;
+    background-color: transparent;
+    pointer-events: none;
+    left: calc(50% - 1px);
+}
+
+.drag-line::after,
+.drag-line::before {
+    content: "";
+    background-color: white;
+    height: calc(50% - 20px);
+    width: 2px;
+    position: absolute;
+}
+
+.drag-line::before {
+    top: 0px
+}
+.drag-line::after {
+    bottom: 0px
+}
+
+.drag-line span{
+    height: 40px;
+    width: 40px;
+    background: transparent;
+    border: 2px solid white;
+    border-radius: 50%;
+    position:absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.drag-line span::before,
+.drag-line span::after {
+    content: "";
+    height: 10px;
+    width: 10px;
+    position:absolute;
+    top: 50%;
+    border-top: 10px solid white;
+    border-right: 10px solid transparent;
+}
+
+.drag-line span::before {
+    left: 50%;
+   transform: translateY(-50%) rotate(135deg);
+} 
+.drag-line span::after {
+    right: 50%;
+    transform: translateY(-50%) rotate(-45deg);
+} 
+

@@ -1,0 +1,302 @@
+<body></body>
+
+<script src="http://gamingJS.com/Three.js"></script>
+<script src="http://gamingJS.com/Tween.js"></script>
+<script src="http://gamingJS.com/ChromeFixes.js"></script>
+<script src="http://gamingJS.com/Scoreboard.js"></script>
+<script src="http://gamingJS.com/Sounds.js"></script>
+
+<script>
+    
+// This is where stuff in our game will happen:
+var scene = new THREE.Scene();
+
+// This is what sees the stuff:
+var aspect_ratio = window.innerWidth / window.innerHeight;
+var camera = new THREE.PerspectiveCamera(75, aspect_ratio, 1, 10000);
+camera.position.z = 500;
+
+  // This will draw what the camera sees onto the screen:
+//var renderer = new THREE.CanvasRenderer();
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+window.addEventListener('resize', onWindowResize, false);
+
+  // ******** START CODING ON THE NEXT LINE ********
+var scoreboard = new Scoreboard();
+scoreboard.countdown(45);
+scoreboard.score();
+scoreboard.help(
+  'Arrow keys to move. ' +
+  'Space bar to jump for fruit. ' +
+  'Watch for shaking trees with fruit.' +
+  'Get near the tree and jump before the fruit is gone!'  
+);
+  
+var game_over = false;
+scoreboard.onTimeExpired(function() {
+   scoreboard.message("Game over!");
+   game_over = true;
+});
+
+var not_allowed = [];
+
+/*
+var shape = new THREE.CubeGeometry(200, 1000, 10);
+var cover = new THREE.MeshBasicMaterial({color:0x990000});
+var road = new THREE.Mesh(shape, cover);
+scene.add(road);
+road.position.set(0, 400, 0);
+road.rotation.set(-Math.PI/4, 0, 0);
+*/
+
+var marker = new THREE.Object3D();
+scene.add(marker);
+marker.add(camera);
+  
+var body = new THREE.CylinderGeometry(25,125,125,25);
+var cover = new THREE.MeshNormalMaterial();
+var avatar = new THREE.Mesh(body, cover);
+marker.add(avatar);
+
+var head = new THREE.SphereGeometry(75,25,25);
+var head_avatar = new THREE.Mesh(head, cover);
+//scene.add(head_avatar);
+avatar.add(head_avatar);
+head_avatar.position.set(0,125,0);
+
+var hand = new THREE.SphereGeometry(50);
+
+var right_hand = new THREE.Mesh(hand,cover);
+//scene.add(right_hand);
+avatar.add(right_hand);
+right_hand.position.set(150,0,0);
+
+var left_hand = new THREE.Mesh(hand,cover);
+//scene.add(left_hand);
+avatar.add(left_hand);
+left_hand.position.set(-150,0,0);
+
+var foot = new THREE.SphereGeometry(50);
+
+var right_foot = new THREE.Mesh(foot,cover);
+//scene.add(right_foot);
+avatar.add(right_foot);
+right_foot.position.set(60,-125,0);
+
+var left_foot = new THREE.Mesh(foot,cover);
+//scene.add(left_foot);
+avatar.add(left_foot);
+left_foot.position.set(-60,-125,0);
+
+marker.add(camera);
+
+function makeTreeAt(x,z) {
+  var trunk = new THREE.Mesh (
+    new THREE.CylinderGeometry (50, 50, 200),
+    new THREE.MeshBasicMaterial ({color: 0xA0522D})
+  );
+  var top = new THREE.Mesh (
+    new THREE.SphereGeometry(150),
+    new THREE.MeshBasicMaterial({color: 0x228b22})
+  );
+  top.position.y = 175;
+  trunk.add(top);
+  var boundary = new THREE.Mesh(new THREE.CircleGeometry(300), new THREE.MeshNormalMaterial());
+  boundary.position.y = -100;
+  boundary.rotation.x = - Math.PI/2;
+  trunk.add(boundary);
+  not_allowed.push(boundary);
+  trunk.position.set(x, -75, z);
+  scene.add(trunk);
+  return top;
+}
+
+var tree_with_treasure;
+var trees = [];
+trees.push(makeTreeAt( 500, 0));
+trees.push(makeTreeAt(-500, 0));
+trees.push(makeTreeAt( 750, -1000));
+trees.push(makeTreeAt(-750, -1000));
+
+function shakeTree() {
+  tree_with_treasure = Math.floor(Math.random()* trees.length);
+  new TWEEN
+  .Tween({x: 0})
+  .to({x: 2*Math.PI}, 200)
+  .repeat(20)
+  .onUpdate(function() { trees[tree_with_treasure].position.x = 75 * Math.sin(this.x) })
+  .start();
+  setTimeout(shakeTree, 12*1000);
+}
+shakeTree();
+
+  // Now, show what the camera sees on the screen:
+var clock = new THREE.Clock(true); 
+function animate() {
+  requestAnimationFrame(animate);
+  TWEEN.update();
+  walk(); turn();
+  acrobatics();
+  renderer.render(scene, camera);
+}
+animate();
+
+var is_moving_right, is_moving_left, is_moving_up, is_moving_down;
+function is_walking() {
+  if (is_moving_right) return true;
+  if (is_moving_left) return true;
+  if (is_moving_up) return true;
+  if (is_moving_down) return true;
+  return false;
+}
+
+function walk() {
+  if (!is_walking()) return; 
+  var position = Math.sin(clock.getElapsedTime()*10)*10;
+  right_hand.position.z = position;
+  left_hand.position.z = -position;
+  right_foot.position.z = -position;
+  left_foot.position.z = position;
+}
+
+function turn() {
+  var direction = 0;
+  if (is_moving_up) direction = Math.PI;
+  if (is_moving_down) direction = 0 ;
+  if (is_moving_right) direction = Math.PI/2;
+  if (is_moving_left) direction = -Math.PI/2;
+  spinAvatar(direction);
+}
+
+function spinAvatar(direction) {
+  new TWEEN.Tween({y: avatar.rotation.y}). to({y: direction}, 100). onUpdate(function    (){avatar.rotation.y = this.y;}).start();
+}
+
+var is_cartwheeling = false;
+var is_flipping = false;
+
+function acrobatics() {
+ if (is_cartwheeling) {
+    avatar.rotation.z = avatar.rotation.z + 0.05;
+  }
+
+  if (is_flipping) {
+    avatar.rotation.y = avatar.rotation.y + 0.05;
+  }
+}  
+
+  //Listen for keypress events
+document.addEventListener('keydown', function(event) {
+  //alert(event.keyCode); sostituito da:
+  var code = event.keyCode;
+  if (code==37) {
+    marker.position.x = marker.position.x-5; //left
+    is_moving_left = true;
+    //avatar.rotation.set(0, -Math.PI/2, 0);
+    turn();
+  }
+  if (code==38)  {
+    marker.position.z = marker.position.z-5; //up
+    is_moving_up = true;
+    //avatar.rotation.set(0, Math.PI, 0);
+    turn();
+  }
+  if (code==39) {
+    marker.position.x = marker.position.x+5; //right
+    is_moving_right = true;
+    //avatar.rotation.set(0, Math.PI/2, 0);
+    turn();
+  } 
+  if (code==40) {
+    marker.position.z = marker.position.z+5; //down
+    is_moving_down = true;
+    //avatar.rotation.set(0, 0, 0);
+    turn();
+  }  
+  
+  /*if ((code==37) && (code==38)) {
+    marker.position.x = marker.position.x-5; //left
+    marker.position.z = marker.position.z-5; //up
+    is_moving_left = true;
+    is_moving_up = true;
+  }*/
+  
+  if (code==67) is_cartwheeling = true; //C
+  
+  if (code==70) is_flipping = true; //F
+  
+  if (code==32) jump(); //space
+  
+  if (code==82) {//Reset
+    avatar.rotation.set(0,0,0);
+    marker.position.set(0,0,0);
+  }
+  
+  if (detectCollisions()) {
+   if (is_moving_left) marker.position.x = marker.position.x+5;
+   if (is_moving_right) marker.position.x = marker.position.x-5;
+   if (is_moving_up) marker.position.z = marker.position.z+5;
+   if (is_moving_down)marker.position.z = marker.position.z-5;
+  } 
+
+  
+});
+
+document.addEventListener('keyup', function(event) {
+  //alert(event.keyCode); sostituito da:
+  var code = event.keyCode;
+  if (code==37) is_moving_left = false; //left
+  if (code==38) is_moving_up = false; //up
+  if (code==39) is_moving_right = false; //right
+  if (code==40) is_moving_down = false; //down
+  if (code==67) is_cartwheeling = false; //C
+  if (code==70) is_flipping = false; //F
+});
+
+function detectCollisions() {
+  var vector = new THREE.Vector3(0, -1, 0);
+  var ray = new THREE.Ray(marker.position, vector);
+  var intersects = ray.intersectObjects(not_allowed);
+  if (intersects.length > 0) return true;
+  return false;
+}
+
+
+function jump() {
+  checkForTreasure();
+  animateJump();
+}
+
+function checkForTreasure() {
+  if (tree_with_treasure === undefined) return;
+  var treasure_tree = trees[tree_with_treasure], p1 =
+  treasure_tree.parent.position, p2 = marker.position;
+  var distance = Math.sqrt((p1.x - p2.x)*(p1.x - p2.x) + (p1.z - p2.z)*(p1.z - p2.z));
+  if (distance < 500) scorePoints();
+}
+  
+function scorePoints() {
+  if (scoreboard.getTimeRemaining() === 0) return;
+  scoreboard.addPoints(10);
+}
+
+function animateJump() {
+  new TWEEN
+  .Tween({jump: 0})
+  .to({jump: Math.PI}, 500)
+  .onUpdate(function () { marker.position.y = 200*
+  Math.sin(this.jump);
+  })
+  .start();
+}
+  
+</script>
