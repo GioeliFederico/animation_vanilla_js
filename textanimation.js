@@ -26,7 +26,7 @@ window.addEventListener('mousemove', function(event){
 
 ctx.fillStyle = 'white';
 ctx.font = '30px Squada One';
-ctx.fillText('JS', 10, 40);
+ctx.fillText('JS', 10, 30);
 
 const textCoordinates = ctx.getImageData(0, 0, canvas.width, canvas.height);
 // console.log(textCoordinates);
@@ -35,7 +35,7 @@ class Particle {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.size = Math.floor(Math.random()*1+2);
+        this.size = Math.floor(Math.random()*1+4);
         //* We save the original x and y coordinates, so that each particle can return to its original position
         this.baseX = this.x;
         this.baseY = this.y;
@@ -105,8 +105,8 @@ function init() {
     for (let y = 0; y < textCoordinates.height; y++) {
         for (let x = 0; x < textCoordinates.width; x++) {
             if (textCoordinates.data[(y * 4 * textCoordinates.width) + (x * 4) + 3] > 128){
-                let positionX = (x * 10) + adjustX;
-                let positionY = (y * 10) + adjustY;
+                let positionX = (x * 20) + adjustX;
+                let positionY = (y * 20) + adjustY;
                 // console.log(positionX, positionY);
                 particleArray.push(new Particle(positionX, positionY));
             }
@@ -119,8 +119,8 @@ init();
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for(let i = 0; i < particleArray.length; i++) {
-       particleArray[i].draw();
-       particleArray[i].update();
+        particleArray[i].draw();
+        particleArray[i].update();
     }
     connect();
     requestAnimationFrame(animate);
@@ -135,8 +135,8 @@ function connect() {
             let dx = particleArray[p1].x - particleArray[p2].x;
             let dy = particleArray[p1].y - particleArray[p2].y;
             let distance = Math.hypot(dx, dy);
-            if (distance < 15) {
-                let opacity = 1 - (distance/30);
+            if (distance < 30) {
+                let opacity = 1 - (distance/60);
                 ctx.strokeStyle = 'rgb(255,255,255,' + opacity + ')';
                 ctx.lineWidth = 1;
                 // ctx.lineWidth = 2*(1-(distance/20));
